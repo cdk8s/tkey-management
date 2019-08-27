@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdk8s.tkey.management.mapper.OauthClientMapper">
+    <resultMap id="BaseResultMap" type="com.cdk8s.tkey.management.pojo.entity.OauthClient">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="client_name" jdbcType="VARCHAR" property="clientName"/>
+        <result column="client_id" jdbcType="VARCHAR" property="clientId"/>
+        <result column="client_secret" jdbcType="VARCHAR" property="clientSecret"/>
+        <result column="client_url" jdbcType="VARCHAR" property="clientUrl"/>
+        <result column="client_desc" jdbcType="VARCHAR" property="clientDesc"/>
+        <result column="logo_url" jdbcType="VARCHAR" property="logoUrl"/>
+        <result column="ranking" jdbcType="TINYINT" property="ranking"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="state_enum" jdbcType="TINYINT" property="stateEnum"/>
+        <result column="delete_enum" jdbcType="TINYINT" property="deleteEnum"/>
+        <result column="create_date" jdbcType="BIGINT" property="createDate"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+        <result column="update_date" jdbcType="BIGINT" property="updateDate"/>
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
+        <result column="delete_date" jdbcType="BIGINT" property="deleteDate"/>
+        <result column="delete_user_id" jdbcType="BIGINT" property="deleteUserId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, client_name, client_id, client_secret, client_url, client_desc, logo_url, ranking,
+    remark, state_enum, delete_enum, create_date, create_user_id, update_date, update_user_id,
+    delete_date, delete_user_id
+    </sql>
+
+
+    <select id="selectByPageQueryParam" resultMap="BaseResultMap" parameterType="com.cdk8s.tkey.management.pojo.dto.param.OauthClientPageQueryParam">
+
+        select
+        <include refid="Base_Column_List"/>
+        from oauth_client
+
+        <where>
+            delete_enum = 1
+            <if test="clientName != null and clientName !=''">
+                AND client_name LIKE CONCAT('%',#{clientName},'%')
+            </if>
+            <if test="clientId != null">
+                AND client_id = #{clientId}
+            </if>
+            <if test="stateEnum != null">
+                AND state_enum = #{stateEnum}
+            </if>
+            <if test="startDate != null">
+                and create_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and create_date &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+
+    <update id="updateDeleteEnumByIdList">
+        update oauth_client
+        set delete_enum=#{updatedDeleteEnum}
+        <where>
+            <if test="idList != null">
+                AND id IN
+                <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <update id="updateStateEnumByIdList">
+        update oauth_client
+        set state_enum=#{updatedStateEnum}
+        <where>
+            <if test="idList != null">
+                AND id IN
+                <foreach collection="idList" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+
+    <select id="selectByIdIn" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from oauth_client
+		where id in
+		<foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+			#{item,jdbcType=BIGINT}
+		</foreach>
+	</select>
+
+</mapper>

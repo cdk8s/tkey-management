@@ -1,0 +1,99 @@
+
+#=================================================================================
+# 容器相关设置
+server:
+  port: 9095
+  servlet:
+    context-path: /sso-client-management
+  tomcat:
+    max-connections: 10000
+    max-threads: 200
+    min-spare-threads: 200
+  connection-timeout: 5000ms
+
+
+debug: true
+logging:
+  config: classpath:logback/logback-test.xml
+#=================================================================================
+# spring 组件相关设置
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: false
+  datasource:
+    platform: h2
+    schema: classpath:h2db/schema.sql
+    data: classpath:h2db/data.sql
+    sql-script-encoding: utf-8
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: 123456
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 100
+      minimum-idle: 100
+      max-lifetime: 1800000
+      connection-test-query: 'SELECT 1'
+      pool-name: myHikariPoolName
+  redis:
+    database: ${SPRING_REDIS_DATABASE:0}
+    port: ${SPRING_REDIS_PORT:6379}
+    host: ${SPRING_REDIS_HOST:redis.cdk8s.com}
+    password: ${SPRING_REDIS_PASSWORD:123456}
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: -1
+        max-idle: -1
+        min-idle: 200
+        max-wait: 2000ms
+
+# actuator
+management:
+  server:
+    port: 19095
+
+#=================================================================================
+# 其他辅助框架相关配置
+
+tkey:
+  sso:
+    oauth:
+      client-id: 'client_management'
+      client-secret: 'a8V0t0f7LusVZghwY3qDYMzcJ6RpSg3G'
+      tkey-server-uri: 'http://sso.cdk8s.com:9091/sso'
+      client-logout-redirect-uri: 'http://management.cdk8s.com:${server.port}${server.servlet.context-path}'
+      # 由前端来决定登录后的 code 回调地址
+      # 当该参数设置为 true 的时候，拦截器发现未认证，会返回 JSON 提示，而不帮客户端直接重定向。
+      # 用在前后端完全分离（域名完全不一致），不用 cookie 和 session 的情况下
+      # 本项目是完全前后端分离，所以这里必须设置为 true
+      enable-code-callback-to-front: true
+      # 如果上面的 enable-code-callback-to-front=true，则下面该回调地址不会被调用
+      client-code-callback-uri: 'http://management.cdk8s.com:${server.port}${server.servlet.context-path}/codeCallback'
+
+
+#=================================================================================
+# 自定义参数相关配置
+custom:
+  properties:
+    oauth:
+      token-max-time-to-live-in-seconds: 86400
+      # 是否开启认证拦截，默认是 true 开启（只用于测试）
+      login-interceptor-check-enable: true
+      # 是否是演示模式，如果是演示模式则无法修改数据
+      demo-mode: true
+      # 在这里配置的用户才能登陆该系统
+      accept-username-list:
+        - admin
+        - abc
+        - edf
+
+
+
+#=================================================================================

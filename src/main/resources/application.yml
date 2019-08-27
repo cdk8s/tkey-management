@@ -1,0 +1,46 @@
+
+#=================================================================================
+# 容器相关设置
+
+#=================================================================================
+# spring 组件相关设置
+spring:
+  application:
+    name: tkey-sso-management
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+#    active: 'gatling'
+  jackson:
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+
+
+
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+  server:
+    servlet:
+      context-path: /tkey-actuator
+
+
+#=================================================================================
+# 其他辅助框架相关配置
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: mapperxml/*.xml
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+#=================================================================================
+# 自定义参数相关配置
+
+
+#=================================================================================
