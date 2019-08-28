@@ -16,10 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,8 +68,10 @@ public class TkeyController {
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout(final HttpServletRequest request, HttpServletResponse response) {
-		String finalLogoutUri = tkeyProperties.getFinalLogoutUri();
+	public String logout(final HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "redirect_uri", required = false) String redirectUri) {
+		// 如果登出的时候，前端有传 redirectUri 参数则以该参数优先。
+		// 如果没有传，则以 TkeyProperties.clientLogoutRedirectUri 参数为最终跳转地址
+		String finalLogoutUri = tkeyProperties.getFinalLogoutUri(redirectUri);
 
 		String accessToken = request.getHeader(GlobalVariable.HEADER_TOKEN_KEY);
 		tokenRedisService.delete(GlobalVariableUtil.getManagementClientTokenKey(accessToken));
