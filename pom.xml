@@ -49,7 +49,7 @@
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <okhttp.version>3.12.1</okhttp.version>
 
-        <tkey-sso-client-starter-rest.version>1.0.0</tkey-sso-client-starter-rest.version>
+        <tkey-sso-client-starter-rest.version>1.0.1</tkey-sso-client-starter-rest.version>
     </properties>
 
 

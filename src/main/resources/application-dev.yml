@@ -65,17 +65,18 @@ management:
 tkey:
   sso:
     oauth:
-      client-id: 'client_management'
-      client-secret: 'a8V0t0f7LusVZghwY3qDYMzcJ6RpSg3G'
-      tkey-server-uri: 'http://sso.cdk8s.com:9091/sso'
-      client-logout-redirect-uri: 'http://management.cdk8s.com:${server.port}${server.servlet.context-path}'
-      # 由前端来决定登录后的 code 回调地址
-      # 当该参数设置为 true 的时候，拦截器发现未认证，会返回 JSON 提示，而不帮客户端直接重定向。
-      # 用在前后端完全分离（域名完全不一致），不用 cookie 和 session 的情况下
-      # 本项目是完全前后端分离，所以这里必须设置为 true
-      enable-code-callback-to-front: true
-      # 如果上面的 enable-code-callback-to-front=true，则下面该回调地址不会被调用
-      client-code-callback-uri: 'http://management.cdk8s.com:${server.port}${server.servlet.context-path}/codeCallback'
+      client:
+        client-id: 'client_management'
+        client-secret: 'a8V0t0f7LusVZghwY3qDYMzcJ6RpSg3G'
+        tkey-server-uri: 'http://sso.cdk8s.com:9091/sso'
+        client-logout-redirect-uri: 'http://management.cdk8s.com:${server.port}${server.servlet.context-path}'
+        # 由前端来决定登录后的 code 回调地址
+        # 当该参数设置为 true 的时候，拦截器发现未认证，会返回 JSON 提示，而不帮客户端直接重定向。
+        # 用在前后端完全分离（域名完全不一致），不用 cookie 和 session 的情况下
+        # 本项目是完全前后端分离，所以这里必须设置为 true
+        enable-code-callback-to-front: true
+        # 如果上面的 enable-code-callback-to-front=true，则下面该回调地址不会被调用
+        client-code-callback-uri: 'http://management.cdk8s.com:${server.port}${server.servlet.context-path}/codeCallback'
 
 
 #=================================================================================
