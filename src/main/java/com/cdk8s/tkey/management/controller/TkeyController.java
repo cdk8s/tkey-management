@@ -7,7 +7,7 @@ import com.cdk8s.tkey.client.rest.service.TkeyService;
 import com.cdk8s.tkey.client.rest.utils.CodecUtil;
 import com.cdk8s.tkey.management.constant.GlobalVariable;
 import com.cdk8s.tkey.management.pojo.dto.param.OauthClientCodeRequestParam;
-import com.cdk8s.tkey.management.properties.OauthProperties;
+import com.cdk8s.tkey.management.properties.OauthClientProperties;
 import com.cdk8s.tkey.management.util.GlobalVariableUtil;
 import com.cdk8s.tkey.management.util.redis.StringRedisService;
 import com.cdk8s.tkey.management.util.response.R;
@@ -36,7 +36,7 @@ public class TkeyController {
 	private TkeyProperties tkeyProperties;
 
 	@Autowired
-	private OauthProperties oauthProperties;
+	private OauthClientProperties oauthClientProperties;
 
 	@Autowired
 	private StringRedisService<String, TkeyToken> tokenRedisService;
@@ -63,7 +63,7 @@ public class TkeyController {
 		map.put("redirectUri", redirectUri);
 		map.put("token", accessToken);
 
-		tokenRedisService.set(GlobalVariableUtil.getManagementClientTokenKey(accessToken), tkeyToken, oauthProperties.getTokenMaxTimeToLiveInSeconds());
+		tokenRedisService.set(GlobalVariableUtil.getManagementClientTokenKey(accessToken), tkeyToken, oauthClientProperties.getTokenMaxTimeToLiveInSeconds());
 		return R.success(map);
 	}
 

@@ -83,16 +83,17 @@ tkey:
 custom:
   properties:
     oauth:
-      token-max-time-to-live-in-seconds: 86400
-      # 是否开启认证拦截，默认是 true 开启（只用于测试）
-      login-interceptor-check-enable: true
-      # 是否是演示模式，如果是演示模式则无法修改数据
-      demo-mode: true
-      # 在这里配置的用户才能登陆该系统
-      accept-username-list:
-        - admin
-        - abc
-        - edf
+      client:
+        token-max-time-to-live-in-seconds: 86400
+        # 是否开启认证拦截，默认是 true 开启（只用于测试）
+        login-interceptor-check-enable: true
+        # 是否是演示模式，如果是演示模式则无法修改数据
+        demo-mode: true
+        # 在这里配置的用户才能登陆该系统
+        accept-username-list:
+          - admin
+          - abc
+          - edf
 
 
 

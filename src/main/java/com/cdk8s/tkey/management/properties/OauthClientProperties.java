@@ -12,8 +12,8 @@ import java.util.List;
 @Getter
 @ToString
 @Component
-@ConfigurationProperties(prefix = "custom.properties.oauth")
-public class OauthProperties {
+@ConfigurationProperties(prefix = "custom.properties.oauth.client")
+public class OauthClientProperties {
 
 
 	private List<String> acceptUsernameList;

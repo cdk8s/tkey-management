@@ -3,7 +3,7 @@ package com.cdk8s.tkey.management.interceptor;
 import com.cdk8s.tkey.client.rest.TkeyProperties;
 import com.cdk8s.tkey.client.rest.pojo.dto.TkeyToken;
 import com.cdk8s.tkey.management.constant.GlobalVariable;
-import com.cdk8s.tkey.management.properties.OauthProperties;
+import com.cdk8s.tkey.management.properties.OauthClientProperties;
 import com.cdk8s.tkey.management.util.CollectionUtil;
 import com.cdk8s.tkey.management.util.GlobalVariableUtil;
 import com.cdk8s.tkey.management.util.StringUtil;
@@ -31,7 +31,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	private TkeyProperties tkeyProperties;
 
 	@Autowired
-	private OauthProperties oauthProperties;
+	private OauthClientProperties oauthClientProperties;
 
 	@Autowired
 	private StringRedisService<String, TkeyToken> tokenRedisService;
@@ -41,7 +41,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@SneakyThrows
 	@Override
 	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, Object handler) {
-		if (!oauthProperties.getLoginInterceptorCheckEnable()) {
+		if (!oauthClientProperties.getLoginInterceptorCheckEnable()) {
 			// 不开启认证校验
 			return true;
 		}
@@ -59,7 +59,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		}
 
 		// 读取可登陆 management 系统的用户名配置，只有在该配置里面的用户才允许操作 management
-		List<String> acceptUsernameList = oauthProperties.getAcceptUsernameList();
+		List<String> acceptUsernameList = oauthClientProperties.getAcceptUsernameList();
 		if (CollectionUtil.isEmpty(acceptUsernameList)) {
 			responseJson(response, "您未被允许登陆该系统");
 			return false;

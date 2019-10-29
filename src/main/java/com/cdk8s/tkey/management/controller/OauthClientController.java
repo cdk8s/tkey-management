@@ -6,7 +6,7 @@ import com.cdk8s.tkey.management.pojo.dto.param.OauthClientPageQueryParam;
 import com.cdk8s.tkey.management.pojo.dto.param.OauthClientUpdateRequestParam;
 import com.cdk8s.tkey.management.pojo.dto.param.bases.IdListRequestParam;
 import com.cdk8s.tkey.management.pojo.dto.param.bases.OauthClientBatchUpdateStateRequestParam;
-import com.cdk8s.tkey.management.properties.OauthProperties;
+import com.cdk8s.tkey.management.properties.OauthClientProperties;
 import com.cdk8s.tkey.management.service.OauthClientService;
 import com.cdk8s.tkey.management.util.response.R;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import javax.validation.Valid;
 public class OauthClientController {
 
 	@Autowired
-	private OauthProperties oauthProperties;
+	private OauthClientProperties oauthClientProperties;
 
 	@Autowired
 	private OauthClientService oauthClientService;
@@ -53,7 +53,7 @@ public class OauthClientController {
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	private ResponseEntity<?> update(@Valid @RequestBody OauthClientUpdateRequestParam param) {
-		if (oauthProperties.getDemoMode()) {
+		if (oauthClientProperties.getDemoMode()) {
 			return R.failure(HttpStatus.BAD_REQUEST, "演示模式无法修改数据");
 		}
 		oauthClientService.update(oauthClientMapstruct.toEntity(param));
@@ -62,7 +62,7 @@ public class OauthClientController {
 
 	@RequestMapping(value = "/batchDelete", method = RequestMethod.POST)
 	private ResponseEntity<?> batchDelete(@Valid @RequestBody IdListRequestParam param) {
-		if (oauthProperties.getDemoMode()) {
+		if (oauthClientProperties.getDemoMode()) {
 			return R.failure(HttpStatus.BAD_REQUEST, "演示模式无法删除数据");
 		}
 		oauthClientService.batchDelete(param.getIdList());
@@ -71,7 +71,7 @@ public class OauthClientController {
 
 	@RequestMapping(value = "/batchUpdateState", method = RequestMethod.POST)
 	private ResponseEntity<?> batchUpdateState(@Valid @RequestBody OauthClientBatchUpdateStateRequestParam param) {
-		if (oauthProperties.getDemoMode()) {
+		if (oauthClientProperties.getDemoMode()) {
 			return R.failure(HttpStatus.BAD_REQUEST, "演示模式无法修改数据");
 		}
 		oauthClientService.batchUpdateState(param.getStateEnum(), param.getIdList());
