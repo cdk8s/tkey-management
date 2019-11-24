@@ -41,7 +41,7 @@ public class OauthClientService {
 	private OauthClientMapstruct oauthClientMapstruct;
 
 	@Autowired
-	private StringRedisService<String, String> stringRedisService;
+	private StringRedisService<String, String> clientRedisService;
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -49,8 +49,8 @@ public class OauthClientService {
 	//=====================================业务处理 start=====================================
 
 	public OauthClientToRedisBO findOneByClientId(String clientId) {
-		String clientIdRedisKey = GlobalVariable.REDIS_CLIENT_ID_PREFIX + clientId;
-		String result = stringRedisService.get(clientIdRedisKey);
+		String clientIdRedisKey = GlobalVariable.REDIS_CLIENT_ID_KEY_PREFIX + clientId;
+		String result = clientRedisService.get(clientIdRedisKey);
 		if (StringUtil.isBlank(result)) {
 			return null;
 		}

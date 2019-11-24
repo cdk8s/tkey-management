@@ -5,7 +5,6 @@ import com.cdk8s.tkey.client.rest.pojo.dto.TkeyToken;
 import com.cdk8s.tkey.management.constant.GlobalVariable;
 import com.cdk8s.tkey.management.properties.OauthClientProperties;
 import com.cdk8s.tkey.management.util.CollectionUtil;
-import com.cdk8s.tkey.management.util.GlobalVariableUtil;
 import com.cdk8s.tkey.management.util.StringUtil;
 import com.cdk8s.tkey.management.util.redis.StringRedisService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,7 +51,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			return false;
 		}
 
-		TkeyToken tkeyToken = tokenRedisService.get(GlobalVariableUtil.getManagementClientTokenKey(accessToken));
+		TkeyToken tkeyToken = tokenRedisService.get(GlobalVariable.REDIS_MANAGEMENT_CLIENT_ACCESS_TOKEN_KEY_PREFIX + accessToken);
 		if (null == tkeyToken) {
 			responseJson(response, null);
 			return false;

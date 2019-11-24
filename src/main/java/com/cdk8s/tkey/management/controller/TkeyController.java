@@ -8,7 +8,6 @@ import com.cdk8s.tkey.client.rest.utils.CodecUtil;
 import com.cdk8s.tkey.management.constant.GlobalVariable;
 import com.cdk8s.tkey.management.pojo.dto.param.OauthClientCodeRequestParam;
 import com.cdk8s.tkey.management.properties.OauthClientProperties;
-import com.cdk8s.tkey.management.util.GlobalVariableUtil;
 import com.cdk8s.tkey.management.util.redis.StringRedisService;
 import com.cdk8s.tkey.management.util.response.R;
 import lombok.SneakyThrows;
@@ -63,7 +62,7 @@ public class TkeyController {
 		map.put("redirectUri", redirectUri);
 		map.put("token", accessToken);
 
-		tokenRedisService.set(GlobalVariableUtil.getManagementClientTokenKey(accessToken), tkeyToken, oauthClientProperties.getTokenMaxTimeToLiveInSeconds());
+		tokenRedisService.set(GlobalVariable.REDIS_MANAGEMENT_CLIENT_ACCESS_TOKEN_KEY_PREFIX + accessToken, tkeyToken, oauthClientProperties.getTokenMaxTimeToLiveInSeconds());
 		return R.success(map);
 	}
 
@@ -74,7 +73,7 @@ public class TkeyController {
 		String finalLogoutUri = tkeyProperties.getFinalLogoutUri(redirectUri);
 
 		String accessToken = request.getHeader(GlobalVariable.HEADER_TOKEN_KEY);
-		tokenRedisService.delete(GlobalVariableUtil.getManagementClientTokenKey(accessToken));
+		tokenRedisService.delete(GlobalVariable.REDIS_MANAGEMENT_CLIENT_ACCESS_TOKEN_KEY_PREFIX + accessToken);
 
 		return "redirect:" + finalLogoutUri;
 	}

@@ -16,8 +16,8 @@ public interface GlobalVariable {
 
 	//=====================================LOG  end=====================================
 
-	String REDIS_CLIENT_ID_PREFIX = "CID-";
+	String REDIS_CLIENT_ID_KEY_PREFIX = "OAUTH:CLIENT_ID:";
 	String HEADER_TOKEN_KEY = "x-token";
-	String MANAGEMENT_CLIENT_TOKEN_KEY_PREFIX = "MANAGEMENT_CLIENT_";
+	String REDIS_MANAGEMENT_CLIENT_ACCESS_TOKEN_KEY_PREFIX = "OAUTH:MANAGEMENT_CLIENT:ACCESS_TOKEN:";
 
 }

@@ -27,8 +27,12 @@ public class OauthClientRedisEventListener {
 	@Autowired
 	private OauthClientMapstruct oauthClientMapstruct;
 
+	/**
+	 * 这里必须采用 value 为 String 类型，不然 客户端和服务端都要读取该信息，但是又没有共同的类进行序列化，所以必须转换成 JSON 字符串
+	 * 如果后面出现的公共类越来越多我再考虑独立出一个 jar 包出来维护
+	 */
 	@Autowired
-	private StringRedisService<String, String> stringRedisService;
+	private StringRedisService<String, String> clientRedisService;
 
 	//=====================================业务处理 start=====================================
 
@@ -43,16 +47,16 @@ public class OauthClientRedisEventListener {
 		if (CollectionUtil.isNotEmpty(oauthClientListByCreate)) {
 			List<OauthClientToRedisBO> oauthClientToRedisBOList = oauthClientMapstruct.toRedisBOList(oauthClientListByCreate);
 			for (OauthClientToRedisBO oauthClientToRedisBO : oauthClientToRedisBOList) {
-				stringRedisService.set(GlobalVariable.REDIS_CLIENT_ID_PREFIX + oauthClientToRedisBO.getClientId(), JsonUtil.toJson(oauthClientToRedisBO));
+				clientRedisService.set(GlobalVariable.REDIS_CLIENT_ID_KEY_PREFIX + oauthClientToRedisBO.getClientId(), JsonUtil.toJson(oauthClientToRedisBO));
 			}
 		}
 
 		if (CollectionUtil.isNotEmpty(oauthClientListByDelete)) {
 			List<String> keyList = new ArrayList<>();
 			for (OauthClient oauthClient : oauthClientListByDelete) {
-				keyList.add(GlobalVariable.REDIS_CLIENT_ID_PREFIX + oauthClient.getClientId());
+				keyList.add(GlobalVariable.REDIS_CLIENT_ID_KEY_PREFIX + oauthClient.getClientId());
 			}
-			stringRedisService.deleteByKeys(keyList);
+			clientRedisService.deleteByKeys(keyList);
 		}
 
 	}
